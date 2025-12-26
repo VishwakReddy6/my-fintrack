@@ -145,7 +145,7 @@ export default function RecurringPage() {
           <CardHeader className="pb-4">
             <CardTitle className="text-lg font-semibold">Paused Recurring Transactions</CardTitle>
             <CardDescription className="mt-1">
-              These are currently paused and won't be created automatically
+              These are currently paused and won&apos;t be created automatically
             </CardDescription>
           </CardHeader>
           <CardContent>

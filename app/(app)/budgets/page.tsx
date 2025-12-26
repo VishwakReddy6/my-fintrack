@@ -103,7 +103,7 @@ export default function BudgetsPage() {
           <p className="text-slate-600 mt-1">Set and track monthly spending budgets</p>
         </div>
         <Button onClick={handleCopyLastMonth} variant="outline" size="sm">
-          Copy Last Month's Budgets
+          Copy Last Month&apos;s Budgets
         </Button>
       </div>
 

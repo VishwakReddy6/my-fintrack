@@ -257,7 +257,7 @@ export default function DashboardPage() {
               Welcome to My Fintrack! 👋
             </CardTitle>
             <CardDescription className="text-slate-600 mt-1">
-              Let's get you started with setting up your finances
+              Let&apos;s get you started with setting up your finances
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -279,7 +279,7 @@ export default function DashboardPage() {
               <div>
                 <div className="font-medium text-slate-900">Seed default categories</div>
                 <div className="text-sm text-slate-600 mt-0.5">
-                  We'll create common categories for you
+                  We&apos;ll create common categories for you
                 </div>
               </div>
             </div>
