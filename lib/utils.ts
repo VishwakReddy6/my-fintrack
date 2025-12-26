@@ -37,3 +37,4 @@ export function getYearMonth(date: Date = new Date()): string {
   return `${year}-${month}`;
 }
 
+

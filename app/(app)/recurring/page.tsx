@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { AddRecurringDialog } from "@/components/finance/add-recurring-dialog";
 import { Id } from "@/convex/_generated/dataModel";
+import { Plus } from "lucide-react";
 
 export default function RecurringPage() {
   const [showAdd, setShowAdd] = useState(false);
@@ -43,44 +44,47 @@ export default function RecurringPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Recurring Transactions</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Recurring Transactions</h1>
           <p className="text-slate-600 mt-1">
             Manage subscriptions and regular expenses
           </p>
         </div>
-        <Button onClick={() => setShowAdd(true)}>Add Recurring Transaction</Button>
+        <Button onClick={() => setShowAdd(true)} size="sm">
+          <Plus className="w-4 h-4 mr-2" />
+          Add Recurring Transaction
+        </Button>
       </div>
 
       {/* Active Recurring */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Active Recurring Transactions</CardTitle>
-          <CardDescription>
+      <Card className="border-slate-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold">Active Recurring Transactions</CardTitle>
+          <CardDescription className="mt-1">
             These will be automatically created based on schedule
           </CardDescription>
         </CardHeader>
         <CardContent>
           {activeRecurring.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {activeRecurring.map((item) => (
                 <div
                   key={item._id}
-                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
+                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white hover:border-emerald-200 hover:shadow-sm transition-all"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="font-medium text-slate-900">
                         {item.description}
                       </span>
                       <Badge
                         variant={item.kind === "income" ? "default" : "secondary"}
-                        className="text-xs"
+                        className="text-xs shrink-0"
                       >
                         {item.kind}
                       </Badge>
                       <Badge
                         variant={item.isBusiness ? "default" : "outline"}
-                        className="text-xs"
+                        className="text-xs shrink-0"
                       >
                         {item.isBusiness ? "Business" : "Personal"}
                       </Badge>
@@ -95,10 +99,10 @@ export default function RecurringPage() {
                       {item.endDate && ` • Ends: ${formatDate(new Date(item.endDate))}`}
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 ml-4 shrink-0">
                     <div
-                      className={`text-lg font-semibold ${
-                        item.kind === "income" ? "text-green-600" : "text-red-600"
+                      className={`text-lg font-bold ${
+                        item.kind === "income" ? "text-emerald-600" : "text-red-600"
                       }`}
                     >
                       {formatCurrency(item.templateAmount)}
@@ -124,9 +128,10 @@ export default function RecurringPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-slate-500">
-              <p>No active recurring transactions</p>
-              <Button onClick={() => setShowAdd(true)} variant="outline" className="mt-4">
+            <div className="text-center py-12 text-slate-500">
+              <p className="mb-4">No active recurring transactions</p>
+              <Button onClick={() => setShowAdd(true)} variant="outline" size="sm">
+                <Plus className="w-4 h-4 mr-2" />
                 Add your first recurring transaction
               </Button>
             </div>
@@ -136,19 +141,19 @@ export default function RecurringPage() {
 
       {/* Paused Recurring */}
       {pausedRecurring.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Paused Recurring Transactions</CardTitle>
-            <CardDescription>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Paused Recurring Transactions</CardTitle>
+            <CardDescription className="mt-1">
               These are currently paused and won't be created automatically
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
+            <div className="space-y-2">
               {pausedRecurring.map((item) => (
                 <div
                   key={item._id}
-                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg opacity-60"
+                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white opacity-75 hover:opacity-100 transition-opacity"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -195,4 +200,5 @@ export default function RecurringPage() {
     </div>
   );
 }
+
 

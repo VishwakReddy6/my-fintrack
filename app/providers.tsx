@@ -10,3 +10,4 @@ export function Providers({ children }: { children: ReactNode }) {
   return <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>;
 }
 
+

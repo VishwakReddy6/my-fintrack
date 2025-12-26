@@ -47,3 +47,4 @@ export type TransactionInput = z.infer<typeof transactionSchema>;
 export type BudgetInput = z.infer<typeof budgetSchema>;
 export type RecurringTransactionInput = z.infer<typeof recurringTransactionSchema>;
 
+

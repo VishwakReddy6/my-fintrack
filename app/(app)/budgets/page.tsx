@@ -99,10 +99,10 @@ export default function BudgetsPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Budgets</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Budgets</h1>
           <p className="text-slate-600 mt-1">Set and track monthly spending budgets</p>
         </div>
-        <Button onClick={handleCopyLastMonth} variant="outline">
+        <Button onClick={handleCopyLastMonth} variant="outline" size="sm">
           Copy Last Month's Budgets
         </Button>
       </div>
@@ -128,7 +128,7 @@ export default function BudgetsPage() {
         <div className="flex-1">
           <Label htmlFor="scope">Scope</Label>
           <Tabs value={scope} onValueChange={(v: any) => setScope(v)}>
-            <TabsList className="w-full">
+            <TabsList className="w-full bg-slate-100">
               <TabsTrigger value="both" className="flex-1">All</TabsTrigger>
               <TabsTrigger value="personal" className="flex-1">Personal</TabsTrigger>
               <TabsTrigger value="business" className="flex-1">Business</TabsTrigger>
@@ -139,10 +139,10 @@ export default function BudgetsPage() {
 
       {/* Budget vs Actual */}
       {budgetsVsActual && budgetsVsActual.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Budget Tracking</CardTitle>
-            <CardDescription>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Budget Tracking</CardTitle>
+            <CardDescription className="mt-1">
               Compare your budgets with actual spending
             </CardDescription>
           </CardHeader>
@@ -151,11 +151,11 @@ export default function BudgetsPage() {
               {budgetsVsActual.map((item) => (
                 <div
                   key={item.categoryId}
-                  className="p-4 border border-slate-200 rounded-lg"
+                  className="p-5 border border-slate-200 rounded-lg bg-white hover:shadow-sm transition-all"
                 >
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-slate-900">
+                      <span className="font-semibold text-slate-900">
                         {item.categoryLabel}
                       </span>
                       {item.isOverBudget && (
@@ -164,20 +164,20 @@ export default function BudgetsPage() {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-sm text-slate-600">
+                    <div className="text-sm font-medium text-slate-600">
                       {formatCurrency(item.spent)} of {formatCurrency(item.budgeted)}
                     </div>
                   </div>
 
                   {/* Progress Bar */}
-                  <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                  <div className="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden mb-3">
                     <div
                       className={`h-full transition-all ${
                         item.isOverBudget
                           ? "bg-red-500"
                           : item.percentage > 80
                           ? "bg-yellow-500"
-                          : "bg-green-500"
+                          : "bg-emerald-500"
                       }`}
                       style={{
                         width: `${Math.min(item.percentage, 100)}%`,
@@ -185,18 +185,18 @@ export default function BudgetsPage() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between mt-2 text-sm">
+                  <div className="flex items-center justify-between text-sm">
                     <span
-                      className={
+                      className={`font-medium ${
                         item.isOverBudget ? "text-red-600" : "text-slate-600"
-                      }
+                      }`}
                     >
                       {item.percentage.toFixed(1)}% used
                     </span>
                     <span
-                      className={
-                        item.remaining >= 0 ? "text-green-600" : "text-red-600"
-                      }
+                      className={`font-medium ${
+                        item.remaining >= 0 ? "text-emerald-600" : "text-red-600"
+                      }`}
                     >
                       {item.remaining >= 0 ? "Remaining: " : "Over by: "}
                       {formatCurrency(Math.abs(item.remaining))}
@@ -208,10 +208,10 @@ export default function BudgetsPage() {
           </CardContent>
         </Card>
       ) : (
-        <Card>
+        <Card className="border-slate-200 shadow-sm">
           <CardHeader>
-            <CardTitle>No Budgets Set</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-lg font-semibold">No Budgets Set</CardTitle>
+            <CardDescription className="mt-1">
               Set budgets for your expense categories below
             </CardDescription>
           </CardHeader>
@@ -219,10 +219,10 @@ export default function BudgetsPage() {
       )}
 
       {/* Add/Edit Budgets */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Manage Budgets</CardTitle>
-          <CardDescription>
+      <Card className="border-slate-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold">Manage Budgets</CardTitle>
+          <CardDescription className="mt-1">
             Add or update budgets for expense categories
           </CardDescription>
         </CardHeader>
@@ -232,7 +232,7 @@ export default function BudgetsPage() {
               {categoriesWithoutBudget.map((category) => (
                 <div
                   key={category._id}
-                  className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg"
+                  className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg bg-white hover:border-emerald-200 transition-colors"
                 >
                   <div className="flex-1">
                     <div className="font-medium text-slate-900">
@@ -298,4 +298,5 @@ export default function BudgetsPage() {
     </div>
   );
 }
+
 

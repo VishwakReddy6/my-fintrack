@@ -30,7 +30,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const COLORS = ["#0f172a", "#475569", "#64748b", "#94a3b8", "#cbd5e1", "#e2e8f0"];
+const COLORS = ["#10b981", "#34d399", "#6ee7b7", "#a7f3d0", "#d1fae5", "#ecfdf5"];
 
 export default function ReportsPage() {
   const [scope, setScope] = useState<"personal" | "business" | "both">("both");
@@ -67,20 +67,20 @@ export default function ReportsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Reports & Analytics</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Reports & Analytics</h1>
         <p className="text-slate-600 mt-1">
           Visualize your financial data with detailed charts and insights
         </p>
       </div>
 
       {/* Filters */}
-      <Card>
+      <Card className="border-slate-200 shadow-sm">
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <Label htmlFor="scope">Scope</Label>
               <Tabs value={scope} onValueChange={(v: any) => setScope(v)}>
-                <TabsList className="w-full">
+                <TabsList className="w-full bg-slate-100">
                   <TabsTrigger value="both" className="flex-1">All</TabsTrigger>
                   <TabsTrigger value="personal" className="flex-1">Personal</TabsTrigger>
                   <TabsTrigger value="business" className="flex-1">Business</TabsTrigger>
@@ -105,10 +105,10 @@ export default function ReportsPage() {
       </Card>
 
       {/* Cash Flow Over Time */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Cash Flow Trends</CardTitle>
-          <CardDescription>
+      <Card className="border-slate-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold">Cash Flow Trends</CardTitle>
+          <CardDescription className="mt-1">
             Income vs expenses over the last {months} months
           </CardDescription>
         </CardHeader>
@@ -141,7 +141,7 @@ export default function ReportsPage() {
                 <Line
                   type="monotone"
                   dataKey="net"
-                  stroke="#3b82f6"
+                  stroke="#64748b"
                   strokeWidth={2}
                   name="Net"
                 />
@@ -157,10 +157,10 @@ export default function ReportsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Expense Breakdown */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Expense Breakdown</CardTitle>
-            <CardDescription>Current month spending by category</CardDescription>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Expense Breakdown</CardTitle>
+            <CardDescription className="mt-1">Current month spending by category</CardDescription>
           </CardHeader>
           <CardContent>
             {spendingByCategory && spendingByCategory.length > 0 ? (
@@ -210,10 +210,10 @@ export default function ReportsPage() {
         </Card>
 
         {/* Income Breakdown */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Income Breakdown</CardTitle>
-            <CardDescription>Current month income by category</CardDescription>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Income Breakdown</CardTitle>
+            <CardDescription className="mt-1">Current month income by category</CardDescription>
           </CardHeader>
           <CardContent>
             {incomeByCategory && incomeByCategory.length > 0 ? (
@@ -264,10 +264,10 @@ export default function ReportsPage() {
       </div>
 
       {/* Account Balances */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Account Balances by Type</CardTitle>
-          <CardDescription>
+      <Card className="border-slate-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold">Account Balances by Type</CardTitle>
+          <CardDescription className="mt-1">
             Distribution of your money across account types
           </CardDescription>
         </CardHeader>
@@ -283,7 +283,7 @@ export default function ReportsPage() {
                   labelStyle={{ color: "#0f172a" }}
                 />
                 <Legend />
-                <Bar dataKey="balance" fill="#0f172a" name="Balance" />
+                <Bar dataKey="balance" fill="#10b981" name="Balance" />
               </BarChart>
             </ResponsiveContainer>
           ) : (
@@ -296,10 +296,10 @@ export default function ReportsPage() {
 
       {/* Monthly Comparison */}
       {cashFlowTimeSeries && cashFlowTimeSeries.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Comparison</CardTitle>
-            <CardDescription>
+        <Card className="border-slate-200 shadow-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg font-semibold">Monthly Comparison</CardTitle>
+            <CardDescription className="mt-1">
               Compare income and expenses across months
             </CardDescription>
           </CardHeader>
@@ -324,4 +324,5 @@ export default function ReportsPage() {
     </div>
   );
 }
+
 

@@ -20,11 +20,11 @@ export default function LoginPage() {
 
     try {
       await signIn("password", { email, password, flow: "signIn" });
-      router.push("/dashboard");
+      // Force a full page reload to ensure auth state is properly set
+      window.location.href = "/dashboard";
     } catch (err) {
       setError("Invalid email or password");
       console.error(err);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -88,4 +88,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 

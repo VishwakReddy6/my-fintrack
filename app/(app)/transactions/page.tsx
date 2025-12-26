@@ -11,6 +11,7 @@ import { AddTransactionDialog } from "@/components/finance/add-transaction-dialo
 import { EditTransactionDialog } from "@/components/finance/edit-transaction-dialog";
 import { Id } from "@/convex/_generated/dataModel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus } from "lucide-react";
 
 export default function TransactionsPage() {
   const [showAdd, setShowAdd] = useState(false);
@@ -39,26 +40,33 @@ export default function TransactionsPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Transactions</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">Transactions</h1>
           <p className="text-slate-600 mt-1">View and manage all your transactions</p>
         </div>
-        <Button onClick={() => setShowAdd(true)}>Add Transaction</Button>
+        <Button onClick={() => setShowAdd(true)} size="sm">
+          <Plus className="w-4 h-4 mr-2" />
+          Add Transaction
+        </Button>
       </div>
 
       <Tabs value={scope} onValueChange={(v: any) => setScope(v)}>
-        <TabsList>
+        <TabsList className="bg-slate-100">
           <TabsTrigger value="both">All</TabsTrigger>
           <TabsTrigger value="personal">Personal</TabsTrigger>
           <TabsTrigger value="business">Business</TabsTrigger>
         </TabsList>
       </Tabs>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>All Transactions</CardTitle>
-          <CardDescription>
-            {transactions?.length || 0} transaction(s) found
-          </CardDescription>
+      <Card className="border-slate-200 shadow-sm">
+        <CardHeader className="pb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-lg font-semibold">All Transactions</CardTitle>
+              <CardDescription className="mt-1">
+                {transactions?.length || 0} transaction(s) found
+              </CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           {transactions && transactions.length > 0 ? (
@@ -66,22 +74,22 @@ export default function TransactionsPage() {
               {transactions.map((transaction) => (
                 <div
                   key={transaction._id}
-                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                  className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white hover:border-emerald-200 hover:shadow-sm transition-all"
                 >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="font-medium text-slate-900">
                         {transaction.description}
                       </span>
                       <Badge
                         variant={transaction.kind === "income" ? "default" : "secondary"}
-                        className="text-xs"
+                        className="text-xs shrink-0"
                       >
                         {transaction.kind}
                       </Badge>
                       <Badge
                         variant={transaction.isBusiness ? "default" : "outline"}
-                        className="text-xs"
+                        className="text-xs shrink-0"
                       >
                         {transaction.isBusiness ? "Business" : "Personal"}
                       </Badge>
@@ -97,11 +105,11 @@ export default function TransactionsPage() {
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 ml-4 shrink-0">
                     <div
-                      className={`text-lg font-semibold ${
+                      className={`text-lg font-bold ${
                         transaction.kind === "income"
-                          ? "text-green-600"
+                          ? "text-emerald-600"
                           : "text-red-600"
                       }`}
                     >
@@ -131,7 +139,10 @@ export default function TransactionsPage() {
           ) : (
             <div className="text-center py-12 text-slate-500">
               <p className="mb-4">No transactions yet</p>
-              <Button onClick={() => setShowAdd(true)}>Add your first transaction</Button>
+              <Button onClick={() => setShowAdd(true)} size="sm">
+                <Plus className="w-4 h-4 mr-2" />
+                Add your first transaction
+              </Button>
             </div>
           )}
         </CardContent>
@@ -148,4 +159,5 @@ export default function TransactionsPage() {
     </div>
   );
 }
+
 

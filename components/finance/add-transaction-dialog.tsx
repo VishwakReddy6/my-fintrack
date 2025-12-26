@@ -29,6 +29,7 @@ interface AddTransactionDialogProps {
 
 export function AddTransactionDialog({ open, onOpenChange }: AddTransactionDialogProps) {
   const createTransaction = useMutation(api.transactions.createTransaction);
+  const seedCategories = useMutation(api.categories.seedDefaultCategories);
   const accounts = useQuery(api.accounts.listAccounts, {});
   const categories = useQuery(api.categories.listCategories, {});
 
@@ -128,18 +129,47 @@ export function AddTransactionDialog({ open, onOpenChange }: AddTransactionDialo
 
           <div>
             <Label htmlFor="category">Category</Label>
-            <Select value={categoryId} onValueChange={(v) => setCategoryId(v as any)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {relevantCategories.map((category) => (
-                  <SelectItem key={category._id} value={category._id}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {relevantCategories.length === 0 ? (
+              <div className="space-y-2">
+                <Select disabled>
+                  <SelectTrigger>
+                    <SelectValue placeholder="No categories available" />
+                  </SelectTrigger>
+                </Select>
+                <p className="text-sm text-slate-500">
+                  No categories found. Click the button below to create default categories.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={async () => {
+                    try {
+                      await seedCategories({});
+                      // The query will automatically refetch after mutation
+                    } catch (error) {
+                      console.error("Error seeding categories:", error);
+                      alert("Failed to seed categories. Please try again.");
+                    }
+                  }}
+                  className="w-full"
+                >
+                  Create Default Categories
+                </Button>
+              </div>
+            ) : (
+              <Select value={categoryId} onValueChange={(v) => setCategoryId(v as any)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {relevantCategories.map((category) => (
+                    <SelectItem key={category._id} value={category._id}>
+                      {category.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <div>
@@ -213,4 +243,5 @@ export function AddTransactionDialog({ open, onOpenChange }: AddTransactionDialo
     </Dialog>
   );
 }
+
 

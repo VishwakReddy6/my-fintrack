@@ -26,11 +26,16 @@ export default function SignupPage() {
         flow: "signUp",
         name 
       });
-      router.push("/dashboard");
+      // Force a full page reload to ensure auth state is properly set
+      window.location.href = "/dashboard";
     } catch (err: any) {
-      setError(err?.message || "Failed to create account");
+      const errorMessage = err?.message || "";
+      if (errorMessage.includes("already exists")) {
+        setError("An account with this email already exists. Please sign in instead.");
+      } else {
+        setError(errorMessage || "Failed to create account");
+      }
       console.error(err);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -113,4 +118,5 @@ export default function SignupPage() {
     </div>
   );
 }
+
 
