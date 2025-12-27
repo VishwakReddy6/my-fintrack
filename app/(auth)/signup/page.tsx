@@ -26,8 +26,10 @@ export default function SignupPage() {
         flow: "signUp",
         name 
       });
-      // Force a full page reload to ensure auth state is properly set
-      window.location.href = "/dashboard";
+      // Small delay to ensure auth token is stored, then redirect
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 100);
     } catch (err: any) {
       const errorMessage = err?.message || "";
       if (errorMessage.includes("already exists")) {
