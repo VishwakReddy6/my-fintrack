@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuthActions } from "@convex-dev/auth/react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function SignupPage() {
   const { signIn } = useAuthActions();
@@ -13,6 +15,25 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [justSignedIn, setJustSignedIn] = useState(false);
+  
+  // Check if user is authenticated
+  const currentUser = useQuery(api.users.getCurrentUser);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (currentUser !== undefined && currentUser !== null) {
+      router.push("/dashboard");
+    }
+  }, [currentUser, router]);
+
+  // Handle redirect after successful sign-in
+  useEffect(() => {
+    if (justSignedIn && currentUser !== undefined && currentUser !== null) {
+      router.push("/dashboard");
+      setJustSignedIn(false);
+    }
+  }, [justSignedIn, currentUser, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -26,10 +47,9 @@ export default function SignupPage() {
         flow: "signUp",
         name 
       });
-      // Small delay to ensure auth token is stored, then redirect
-      setTimeout(() => {
-        window.location.href = "/dashboard";
-      }, 100);
+      // Set flag to trigger redirect once auth state is confirmed
+      setJustSignedIn(true);
+      // Keep loading state while waiting for auth confirmation
     } catch (err: any) {
       const errorMessage = err?.message || "";
       if (errorMessage.includes("already exists")) {
@@ -39,8 +59,14 @@ export default function SignupPage() {
       }
       console.error(err);
       setIsLoading(false);
+      setJustSignedIn(false);
     }
   };
+
+  // Show loading or redirect if already authenticated
+  if (currentUser !== undefined && currentUser !== null) {
+    return null; // Will redirect via useEffect
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-8 border border-slate-200">
@@ -52,10 +78,16 @@ export default function SignupPage() {
         </div>
       )}
 
+      {isLoading && !error && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 text-sm">
+          Creating your account... Please wait.
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
-            Full Name
+            Name
           </label>
           <input
             id="name"
@@ -63,7 +95,8 @@ export default function SignupPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
+            disabled={isLoading}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="John Doe"
           />
         </div>
@@ -78,7 +111,8 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
+            disabled={isLoading}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="you@example.com"
           />
         </div>
@@ -93,13 +127,10 @@ export default function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            minLength={8}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
+            disabled={isLoading}
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
             placeholder="••••••••"
           />
-          <p className="mt-1 text-xs text-slate-500">
-            Must be at least 8 characters
-          </p>
         </div>
 
         <button
@@ -107,7 +138,7 @@ export default function SignupPage() {
           disabled={isLoading}
           className="w-full py-2 px-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isLoading ? "Creating account..." : "Create account"}
+          {isLoading ? "Creating account..." : "Sign up"}
         </button>
       </form>
 
@@ -120,5 +151,3 @@ export default function SignupPage() {
     </div>
   );
 }
-
-
